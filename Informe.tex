@@ -10,6 +10,7 @@
 \usepackage{float}
 \usepackage{color}
 \usepackage{stringstrings}
+\usepackage{adjustbox}
 
 \definecolor{codegreen}{rgb}{0,0.6,0}
 \definecolor{codegray}{rgb}{0.5,0.5,0.5}
@@ -61,6 +62,14 @@
 
 \newcommand{\imgmic}{./Img/i8086.jpg}
 \newcommand{\imgbs}{./Img/binarysearch.png}
+\newcommand{\capOne}{./Capturas-emu/Captura-1.jpg}
+\newcommand{\capTwo}{./Capturas-emu/Captura-2.jpg}
+\newcommand{\capThree}{./Capturas-emu/Captura-3.jpg}
+\newcommand{\capFour}{./Capturas-emu/Captura-4.jpg}
+\newcommand{\capFive}{./Capturas-emu/Captura-5.jpg}
+\newcommand{\capSix}{./Capturas-emu/Captura-6.jpg}
+\newcommand{\capSeven}{./Capturas-emu/Captura-7.jpg}
+\newcommand{\capEight}{./Capturas-emu/Captura-8.jpg}
 
 \linespread{1.6}
 \begin{document}  
@@ -388,7 +397,6 @@
     \end{lstlisting}
   \end{center} 
   \newpage
-  \vspace*{-2cm}
 
   {\Large En el bloque \textbf{7} de código en la linea \textbf{1} se define el procedimiento \codeblue{\textbf{third}},
     donde en la linea \textbf{2} limpiamos el registro \codebordo{\textbf{dx}}, en la linea \textbf{3}
@@ -404,7 +412,7 @@
     \codebordo{\textbf{bh}} el bucle \codeblue{\textbf{SEARCHLOOP}} termina y se retorna en la linea \textbf{10} con la 
     instrucción \codeblue{\textbf{RET}}
   }
-
+ \vspace*{2cm}
 \begin{center}
     {\normalsize Bloque 8}
     \begin{lstlisting}[language=8086] 
@@ -412,24 +420,24 @@
             mov dl, 13
             mov ah, 2
             int 21h
-            
+
             mov dl, 10
             mov ah, 2
             int 21h
-            
+
             mov dx, offset resultado
             mov ah, 9h
             int 21h
-             
+
             mov dl, middle
             add dl, '0'
             mov ah, 02h
+            int 21h         
+            mov ax, 4C00h
             int 21h
     \end{lstlisting}
 \end{center}
-\newpage
-\vspace*{-2cm}
-
+\vspace*{1cm}
 {\Large Al retornar, el procedimiento que sigue en el orden de llamadas es el procedimiento \codeblue{\textbf{PRINT}} que sirve para imprimir 
   el índice del número que ingresamos por teclado, que es la posición donde se encuentra ese número en el array.
   En la linea \textbf{2} del bloque \textbf{8} de código se copia el valor \textbf{13} en el registro \codebordo{\textbf{dl}}, en la linea \textbf{3} se 
@@ -443,6 +451,45 @@
   \codebordo{\textbf{dx}}, en la linea \textbf{11} se copia el valor de la función \textbf{9h} en \codebordo{\textbf{ah}}, luego se usa la interrupción 
   \codeblue{\textbf{int}} \textbf{21h} para imprimir la cadena que se guarda en la variable resultado que es \codepurple{\textbf{El indice del valor ingresado es: }},
   en la linea \textbf{14} se copia el indice del número buscado que esta en \textbf{middle} al registro \codebordo{\textbf{dl}}, en la linea \textbf{15} se convierte 
-  ese valor \textbf{ascci} a decimal, para que en la linea \textbf{16 y 17} se imprima el indice del número buscado por consola.
+  ese valor \textbf{ascci} a decimal, para que en la linea \textbf{16 y 17} se imprima el indice del número buscado por consola, en la linea \textbf{18 y 19} utilizo 
+  una instrucción para terminar la ejecución del programa.
  }
+
+ {\Large 
+     A continuación mostrare unas capturas de pantalla de la ejecución del programa en el emulador emu8086.
+ }
+    \newpage
+    \begin{center}
+      \includegraphics[width=\textwidth]{\capOne}
+    \end{center}
+    \vspace*{1cm}
+    \begin{center}
+      \includegraphics[width=\textwidth]{\capTwo}
+    \end{center}
+    \newpage
+
+    \begin{center}
+      \includegraphics[width=\textwidth]{\capThree}
+    \end{center}
+    \vspace*{1cm}
+    \begin{center}
+      \includegraphics[width=\textwidth]{\capFour}
+    \end{center}
+    \newpage
+
+    \vspace*{-2cm}
+    \begin{center}
+      \includegraphics[width=\textwidth]{\capFive}
+    \end{center}
+    \begin{center}
+      \includegraphics[width=\textwidth]{\capSix}
+    \end{center}
+    \newpage
+
+    \begin{center}
+      \includegraphics[width=\textwidth]{\capSeven}
+    \end{center}
+    \begin{center}
+      \includegraphics[width=\textwidth]{\capEight}
+    \end{center}
 \end{document}

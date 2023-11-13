@@ -11,10 +11,11 @@ org 100h
     middle db ?
     value db ?
 
+
 .CODE
 
 MAIN:
-    
+
     mov ax, numeros
     
     mov dx, offset mensaje
@@ -30,7 +31,7 @@ MAIN:
     call PRINT
     
 
-PRINT:
+PRINT: 
     mov dl, 13
     mov ah, 2
     int 21h
@@ -46,7 +47,11 @@ PRINT:
     mov dl, middle
     add dl, '0'
     mov ah, 02h
+    int 21h 
+    
+    mov ax, 4C00h
     int 21h
+  
 
 BINARYSEARCH PROC
     mov ax, 0
@@ -78,6 +83,7 @@ BINARYSEARCH PROC
         
         cmp value, cl
         jne second
+
         jmp SEARCHEND
         
         second:
