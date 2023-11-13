@@ -1,0 +1,448 @@
+\documentclass[a4paper,twoside]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[spanish]{babel}
+\usepackage[a4paper, margin=1in]{geometry}
+\usepackage{graphicx}
+\usepackage{listings}
+\usepackage{algorithm2e}
+\usepackage{setspace}
+\usepackage{microtype}
+\usepackage{float}
+\usepackage{color}
+\usepackage{stringstrings}
+
+\definecolor{codegreen}{rgb}{0,0.6,0}
+\definecolor{codegray}{rgb}{0.5,0.5,0.5}
+\definecolor{codepurple}{rgb}{0.30,0,0.30}
+\definecolor{backcolour}{rgb}{0.95,0.95,0.92}
+\definecolor{codeblue}{rgb}{0,0,1}
+\definecolor{codebordo}{rgb}{0.5,0,0}
+
+\newcommand{\codebordo}[1]{\textcolor{codebordo}{#1}}
+\newcommand{\codegreen}[1]{\textcolor{codegreen}{#1}}
+\newcommand{\codeblue}[1]{\textcolor{codeblue}{#1}}
+\newcommand{\codegray}[1]{\textcolor{codegray}{#1}}
+\newcommand{\codepurple}[1]{\textcolor{codepurple}{#1}}
+
+
+\lstdefinelanguage{8086}{
+  morekeywords=[1]{db, mov, sub, offset, int, inc, dec, call, add, cmp, div, jmp, jne, jg, ORG, DATA, CODE, MAIN, PRINT, BINARYSEARCH, PROC, SEARCHLOOP, SEARCHEND, second, third, RET, ENDP, END},
+  morekeywords=[2]{ax, ah, al, bx, bh, bl, cx, ch, cl, dx, dh, dl, si},
+  morecomment=[l]{;},
+  morestring=[b]',
+  morestring=[b]",
+  sensitive=false
+}
+
+
+\lstdefinestyle{mystyle}{
+    backgroundcolor=\color{backcolour},   
+    commentstyle=\color{codegreen},
+    keywordstyle=[1]\color{codeblue},
+    keywordstyle=[2]\color{codebordo},
+    numberstyle=\normalsize\color{codegray},
+    stringstyle=\color{codepurple},
+    basicstyle=\large\tt,
+    breakatwhitespace=false,         
+    breaklines=true,                 
+    captionpos=b,                    
+    keepspaces=true,                 
+    numbers=left,                    
+    numbersep=5pt,                  
+    showspaces=false,                
+    showstringspaces=false,
+    showtabs=false,                  
+    tabsize=4,
+    xleftmargin=-2em,
+    xrightmargin=-2em
+}
+
+\lstset{style=mystyle}
+
+\newcommand{\imgmic}{./Img/i8086.jpg}
+\newcommand{\imgbs}{./Img/binarysearch.png}
+
+\linespread{1.6}
+\begin{document}  
+  \begin{titlepage}
+    \vfill
+    \centering
+    {\Huge \textbf{Programación en ensamblador i8086}} \\[4cm]
+    \includegraphics[width=\textwidth,height=7cm,keepaspectratio]{\imgmic} \\[4cm]
+    \begin{flushleft} 
+      {\LARGE \textsc{Tema: Algoritmo de búsqueda binaria}} \\[2ex]
+      {\LARGE \textsc{Asignatura: Arquitectura de computadoras}} \\[2ex]
+      {\LARGE \textsc{Nombre: Lautaro Galante}} \\[2ex]
+      {\LARGE \textsc{Profesor: Víctor Teppaz}} \\[2ex]
+      {\LARGE \textsc{Fecha: \Large \today}}
+    \end{flushleft}
+  \end{titlepage}
+  \thispagestyle{plain}
+    \begin{center}
+      {\Large Como proyecto final de la materia de Arquitectura de computadoras, se nos pidió 
+        crear un programa en ensamblador 8086, yo decidí implementar el algoritmo de búsqueda binaria,
+        ya que este me haria pensar un poco sobre como hacerlo y asi poder aprender sobre las 
+        distintas instrucciones de la arquitectura.
+      }
+    \end{center}
+
+    \begin{center}
+      {\Large 
+
+        En ciencias de la computación y matemáticas, el algoritmo de 
+        búsqueda binaria o binary search en inglés, es un algoritmo de 
+        búsqueda que encuentra la posición de un valor en un array 
+        ordenado. Compara el valor con el elemento en el medio del 
+        array, si no son iguales, la mitad en la cual el valor no 
+        puede estar es eliminada y la búsqueda continúa en la mitad 
+        restante hasta que el valor se encuentre.
+      } 
+    \end{center}
+    
+    \begin{center} 
+      {\Large 
+        La búsqueda binaria es computada en el peor de los casos en 
+        un tiempo logarítmico, realizando \(O(\log n) \) comparaciones, 
+        donde \textbf{n} es el número de elementos del arreglo y 
+        \textbf{log} es el logaritmo.
+        La búsqueda binaria requiere solamente \(O(1)\) en espacio, 
+        es decir, que el espacio requerido por el algoritmo 
+        es el mismo para cualquier cantidad de elementos en el array. 
+      }
+    \end{center}
+    
+    \vspace*{1cm}
+
+    {\Large Para que se entienda mejor dejo expresado el algoritmo
+     en pseudocódigo:
+     \begin{singlespace}
+     \begin{algorithm}[H]
+      \DontPrintSemicolon
+      \SetAlgoLined
+      \SetKwFunction{FMain}{busqueda\_binaria}
+      \SetKwProg{Fn}{Function}{:}{}
+      \Fn{\FMain{$Array$, $n$, $T$}}{
+          $Izquierda := 0$\;
+          $Derecha := n - 1$\;
+          \While{$Izquierda \leq Derecha$}{
+              $medio := (Izquierda + Derecha) / 2$\;
+              \eIf{$Array[medio] < T$}{
+                  $Izquierda := medio + 1$\;
+              }{
+                  \eIf{$Array[medio] > T$}{
+                      $Derecha := medio - 1$\;
+                  }{
+                      \Return{$medio$}\;
+                  }
+              }
+          }
+          \Return{no se encontro}\;
+      }
+      \end{algorithm} 
+      \end{singlespace}
+    }
+    \newpage
+    \vspace*{-2cm}
+    \begin{center}
+      {\Large Aqui hay una representación gráfica de los pasos que realiza el algoritmo}
+    \end{center} 
+    \vspace*{1cm}
+    \begin{figure}[H]
+      \centering
+      \hspace{0.5cm}\includegraphics[width=0.8\linewidth,height=0.9\textheight]{\imgbs}
+    \end{figure}
+
+    \newpage
+
+    \vspace*{-2cm}
+    \begin{center}
+      {\Large A continuación explicare que hace cada parte del código en ensamblador}
+      \vspace*{2cm}
+      
+      {\normalsize Bloque 1}
+      \begin{lstlisting}[language=8086]
+      ORG 100h
+
+      .DATA
+          numeros db 1, 2, 3, 4, 5, 6, 7, 8, 9 
+          numero db ?
+          mensaje db "Ingrese el numero a buscar: ", "$"
+          resultado db "El indice del valor ingresado es: ", "$"
+          left db 0
+          right db 8
+          middle db ?
+          value db ?
+      \end{lstlisting}
+    \end{center} 
+    \vspace*{1cm}
+      {\Large Al inicio del código en la linea \textbf{1} declaro \codeblue{\textbf{ORG}} \textbf{100h} que es una directiva del compilador,
+        luego en la linea \textbf{3} defino un sector de datos \codeblue{\textbf{.DATA}} en el cuál tengo un array y distintas variables, 
+        el primero es un array \textbf{numeros} que es de tipo \codeblue{\textbf{db}} que tiene una capacidad 
+        de \textbf{8 bits} es decir \textbf{1 byte}, este contiene números del \textbf{1} al \textbf{9},
+        en la linea \textbf{5} una variable \textbf{numero} del mismo tipo la cuál la inicialize con el simbolo \textbf{?} 
+        que significa que aún no se le a asignado un valor, en la linea \textbf{6} una variable string \textbf{mensaje} y en la \textbf{7} 
+        \textbf{resultado} para mostrar los mensajes para que se ingrese el número, y para indicar el valor de salida. Luego hay cuatro 
+        variables, \textbf{left, rigth, middle y value}, \textbf{left} guarda el primer indice del array que es \textbf{0} 
+        y \textbf{right} guarda el inidice \textbf{8} que es el ultimo elemento del array en este caso es el \textbf{9}, en la variable 
+        \textbf{middle} y \textbf{value} aún no le asigne ningún valor, luego mas adelante en el codigo se explicara para que son cada variable.
+      }   
+
+    \newpage
+
+    \vspace*{-1cm}
+    \begin{center}
+      {\normalsize Bloque 2}
+      \begin{lstlisting}[language=8086]
+      .CODE
+        MAIN:
+          mov ax, numeros
+          mov dx, offset mensaje
+         
+          mov ah, 9h
+          int 21h
+    
+          mov ah, 01h
+          int 21h
+          sub al, '0'
+          mov numero, al
+    
+          call BINARYSEARCH
+          call PRINT
+      \end{lstlisting}
+    \end{center} 
+    \vspace*{0.5cm}
+      {\Large 
+        En el bloque \textbf{2} de codigo dentro del sector \codeblue{\textbf{.CODE}} se encuentra el procedimiento principal \codeblue{\textbf{.MAIN}}
+        que tiene las primeras instrucciones y las llamadas a otros procedimientos, en la linea \textbf{3} se copian 
+        los valores del array \textbf{numeros} a el registro entero de 16 bits \codebordo{\textbf{ax}} usando la instrucción 
+        \codeblue{\textbf{mov}}, en la linea \textbf{4} se copia la dirección de memoria de la variable \textbf{mensaje}
+        utilizando el operador \codeblue{\textbf{offset}} en el registro \codebordo{\textbf{dx}}, en la linea \textbf{6} se copia el valor 
+        hexadecimal \textbf{9h} al registro \codebordo{\textbf{ah}} que es la parte alta de \codebordo{\textbf{ax}} esta es una función para 
+        imprimir una cadena por consola, en la linea \textbf{7} se ejecuta la interrupción \codeblue{\textbf{int}} \textbf{21h} el \textbf{bios}
+        busca el código de función que coincide con la función cargada en el registro \codebordo{\textbf{ah}} y procede a imprimir la cadena 
+        \codepurple{\textbf{Ingrese el numero a buscar:}} que se encuentra guardada en la variable \textbf{mensaje}. 
+      }
+      \par
+      {\Large En la linea \textbf{9} se copia el valor de la función \textbf{01h} en el registro \codebordo{\textbf{ah}} esta función es para 
+        leer un carácter desde el teclado, en la linea \textbf{10} se ejecuta la interrupción, en la linea \textbf{11} se convierte el valor 
+        numérico \textbf{ascci} a decimal y se almacena en el registro \codebordo{\textbf{al}}, 
+        luego en la linea \textbf{12} se copia el valor del registro \codebordo{\textbf{al}} en la variable \textbf{numero}, 
+        en la linea \textbf{14} se utiliza el operador \codeblue{\textbf{call}} para llamar al procedimiento \codeblue{\textbf{BINARYSEARCH}} 
+        que es donde ocurre toda la lógica del algoritmo, y en la linea \textbf{15} se llama al procedimiento \codeblue{\textbf{PRINT}} 
+        que lo utilizo para imprimir los valores.
+      }
+    \vspace*{1cm}
+    \begin{center}
+      {\normalsize Bloque 3}
+      \begin{lstlisting}[language=8086]
+        BINARYSEARCH PROC
+            mov ax, 0
+            mov bl, left
+            mov bh, right
+            
+            SEARCHLOOP:
+                cmp bl, bh
+                jg SEARCHEND
+      \end{lstlisting}
+    \end{center} 
+      \vspace*{0.5cm}
+      {\Large En este bloque \textbf{3} de código definimos el procedimiento \codeblue{\textbf{BINARYSEARCH}}, donde dentro en la linea 
+         \textbf{2} limpiamos el registro de \codebordo{\textbf{ax}} copiando el valor \textbf{0}, en la linea \textbf{3} copiamos
+         el valor almacenado en la variable \textbf{left} a \codebordo{\textbf{bl}} la parte baja de \codebordo{\textbf{bx}}, en la linea \textbf{4}
+         copiamos el valor del la variable \textbf{right} a \codebordo{\textbf{bh}} su parte alta.
+      }
+
+      {\Large Luego en la linea \textbf{6} definimos un ciclo \codeblue{\textbf{SEARCHLOOP}}, en el utilizamos la instrucción \codeblue{\textbf{cmp}}
+          su función es equivalente a la de una resta, ya que resta el segundo operando al el primer operando, pero no guarda el resultado de la resta,
+          sino que cambia las banderas de estado en el registro de banderas, \textbf{CF:} se establece en 1 si el primer operando es menor al segundo, 
+          En este caso como el segundo operando es mayor al primero, la bandera \textbf{CF} se setea en \textbf{1}.
+      }
+
+      {\Large En la linea \textbf{8} la instrucción \codeblue{\textbf{jg}} corre la ejecución del programa a donde se encuentre la definición 
+          de la etiqueta asignada a su derecha, que en este caso es \codeblue{\textbf{SEARCHEND}}, esto sucede si el primer operando es mayor
+          al segundo, lo que llevaria a terminar el ciclo ya que no tiene mucho sentido seguir con la búsqueda por que cuando se llega a esta 
+          instancia significa que se encontro el indice del valor ingresado.
+      }
+    \newpage  
+    \vspace*{-2cm}
+    \begin{center}
+      {\normalsize Bloque 4}
+      \begin{lstlisting}[language=8086]
+            mov al, bh
+            add al, bl
+            mov cl, 2
+            div cl
+            
+            mov cx, 0
+            mov cl, numero
+      \end{lstlisting}
+    \end{center} 
+      \vspace*{0.5cm}
+      {\Large Este bloque \textbf{4} de código es una continuación de las instrucciónes que se encuentran dentro del ciclo
+        \codeblue{\textbf{SEARCHLOOP}}, en la linea \textbf{1} copiamos el valor de \codebordo{\textbf{bh}} 
+        en \codebordo{\textbf{al}}, en la linea \textbf{2} con la instrucción \codeblue{\textbf{add}} sumamos
+        el valor de \codebordo{\textbf{bl}} a \codebordo{\textbf{al}}. 
+        En la linea \textbf{3} copiamos el valor \textbf{2} al registro bajo \codebordo{\textbf{cl}},
+        y en la linea \textbf{4} usamos la intrucción \codeblue{\textbf{div}} para dividir en dos el valor que se encuentra
+        en \codebordo{\textbf{al}}, por lo que ahora tendremos dos valores en el registro \codebordo{\textbf{ax}},
+        en \codebordo{\textbf{ah}} se ecuentra el residuo y en \codebordo{\textbf{al}} se encuentra el cociente.
+      }
+
+      {\Large En la linea \textbf{6} limpiamos el valor del registro \codebordo{\textbf{cx}},
+        y en la linea \textbf{7} copiamos el valor del la variable \textbf{numero}, que es el valor que ingresamos 
+        teclado.
+      }
+
+    \vspace*{1cm}
+
+    \begin{center}
+      {\normalsize Bloque 5}
+      \begin{lstlisting}[language=8086]
+            mov ah, 0
+            mov si, ax
+            
+            mov middle, al
+            mov al, numeros[si]
+            mov value, al
+            
+            cmp value, cl
+            jne second
+            jmp SEARCHEND
+      \end{lstlisting}
+    \end{center} 
+
+    \vspace*{-1cm}
+      \newpage
+      {\Large En el bloque \textbf{5} de código, en la linea número \textbf{1} se sobreescribe con cero el valor del registro alto \codebordo{\textbf{ah}}
+        para que en el registro entero \codebordo{\textbf{ax}} solo quede en su parte baja \codebordo{\textbf{al}} el resultado de haber 
+        dividido la sumatoria de los valores \textbf{left} y \textbf{right} entre \textbf{2}, entonces en la linea \textbf{2} copiamos el valor
+        de \codebordo{\textbf{ax}} en \codebordo{\textbf{si}} (\textbf{source index}) que es el índice de la mitad del array \textbf{numeros}.
+      }
+
+      {\Large Igualmente necesitamos guardar el valor del índice medio en la variable \textbf{middle}, eso ocurre en la linea \textbf{4}
+        donde copiamos el valor de el registro \codebordo{\textbf{al}} ya que necesitamos reescribir ese registro para que en la linea \textbf{5}, 
+        utilicemos el \codebordo{\textbf{si}} para iterar dentro del array \textbf{numeros} de la siguiente manera \textbf{numeros[\codebordo{\textbf{si}}]}, 
+        entonces con el índice medio dentro del array accedemos al número que se encuentra en esa posición media y lo copiamos en el registro 
+        \codebordo{\textbf{al}}, luego en la linea \textbf{6} copiamos ese número en la variable \textbf{value}.
+      }
+      
+      {\Large En la linea \textbf{8} comparamos ese número medio con el número que se ingreso por teclado que ya lo tenemos almacenado en el registro 
+      \codebordo{\textbf{cl}} que explique en el bloque \textbf{4}, por lo que si los números no son iguales la instrucción \codeblue{\textbf{jne}}
+        salta al procedimiento \codeblue{\textbf{second}}, sino la instrucción \codeblue{\textbf{jmp SEARCHEND}} termina el bucle y se retorna ese 
+        número ya que son iguales.
+      }
+      
+      \vspace*{1cm}
+
+    \begin{center}
+      {\normalsize Bloque 6}
+      \begin{lstlisting}[language=8086]
+            second:
+                cmp value, cl
+                jg third
+                
+                mov dx, 0
+                mov dl, middle
+                inc dl
+                mov bl, dl
+                
+                jmp SEARCHLOOP
+      \end{lstlisting}
+    \end{center} 
+  \newpage
+  \vspace*{-2cm}
+  
+  {\Large En el bloque \textbf{6} en la linea \textbf{1} se encuentra la definición del procedimiento \codeblue{\textbf{second}},
+    dentro del mismo en la linea \textbf{2} comparamos el valor medio del array, es decir el número que se encuentra en la mitad
+    con el número ingresado por teclado, en la linea \textbf{3} si el primer operando es mayor al segundo se salta al procedimiento 
+    \codeblue{\textbf{third}}, sino se procede con las operaciones que comienzan en la linea \textbf{5}, se copia el valor \textbf{0} en el 
+    registro \codebordo{\textbf{dx}} para limpiarlo, luego en la linea \textbf{6} se copia el indice del valor medio que esta 
+    guardado en la variable \textbf{middle} en \codebordo{\textbf{dl}}, luego en la linea \textbf{7} se usa la instrucción \codeblue{\textbf{inc}}
+    para incrementar en uno el registro \codebordo{\textbf{dl}}.
+  }
+  
+  {\Large En la linea \textbf{8} se copia el valor incrementado de \codebordo{\textbf{dl}} en el registro \codebordo{\textbf{bl}}
+    ya que este corresponde a la parte izquierda del array \textbf{numeros}, para recortar la parte de array en donde no se encuentra 
+    valor que se ingreso por teclado.
+    Luego en la linea \textbf{10} se salta al principio del loop utilizando la instrucción \codeblue{\textbf{jmp SEARCHLOOP}} para que 
+    este se vuelva a iterar.
+  }
+  \vspace*{1cm}
+  \begin{center}
+    {\normalsize Bloque 7}
+    \begin{lstlisting}[language=8086]      
+              third:
+                  mov dx, 0
+                  mov dl, middle
+                  dec dl
+                  mov bh, dl
+                  
+                  jmp SEARCHLOOP
+                      
+            SEARCHEND:
+            RET
+
+        BINARYSEARCH ENDP
+
+    END MAIN
+    \end{lstlisting}
+  \end{center} 
+  \newpage
+  \vspace*{-2cm}
+
+  {\Large En el bloque \textbf{7} de código en la linea \textbf{1} se define el procedimiento \codeblue{\textbf{third}},
+    donde en la linea \textbf{2} limpiamos el registro \codebordo{\textbf{dx}}, en la linea \textbf{3}
+    copiamos el valor de la variable \textbf{middle} en \codebordo{\textbf{dl}}, y luego en la linea \textbf{4} 
+    utilizamos la instrucción \codeblue{\textbf{dec}} para decrementar en \textbf{1} el valor que se encuentra en 
+    \codebordo{\textbf{dl}}, ya que en este caso no necesitamos hacer ninguna comparación, por que el programa llego 
+    hasta este procedimiento por que la comparación del procedimiento anterior \codeblue{\textbf{second}} dio que el primer
+    operando era mayor al segundo, entonces en este procedimiento solo se realizan las operaciones necesarias, para que en 
+    la linea \textbf{5} se copie el nuevo valor de \codebordo{\textbf{dl}} en \codebordo{\textbf{bh}} que es la parte 
+    derecha del array \textbf{numeros}, luego en la linea \textbf{7} con la instrucción \codeblue{\textbf{jmp SEARCHLOOP}}
+    volvemos a iterar hasta que se encuentra el valor que buscamos, cuando la ejecución llega nuevamente a la comparación 
+    que ocurre en el bloque de código número \textbf{3} y el valor del registro \codebordo{\textbf{bl}} es mayor que 
+    \codebordo{\textbf{bh}} el bucle \codeblue{\textbf{SEARCHLOOP}} termina y se retorna en la linea \textbf{10} con la 
+    instrucción \codeblue{\textbf{RET}}
+  }
+
+\begin{center}
+    {\normalsize Bloque 8}
+    \begin{lstlisting}[language=8086] 
+        PRINT:
+            mov dl, 13
+            mov ah, 2
+            int 21h
+            
+            mov dl, 10
+            mov ah, 2
+            int 21h
+            
+            mov dx, offset resultado
+            mov ah, 9h
+            int 21h
+             
+            mov dl, middle
+            add dl, '0'
+            mov ah, 02h
+            int 21h
+    \end{lstlisting}
+\end{center}
+\newpage
+\vspace*{-2cm}
+
+{\Large Al retornar, el procedimiento que sigue en el orden de llamadas es el procedimiento \codeblue{\textbf{PRINT}} que sirve para imprimir 
+  el índice del número que ingresamos por teclado, que es la posición donde se encuentra ese número en el array.
+  En la linea \textbf{2} del bloque \textbf{8} de código se copia el valor \textbf{13} en el registro \codebordo{\textbf{dl}}, en la linea \textbf{3} se 
+  copia el valor \textbf{2} en \codebordo{\textbf{ah}}, en la linea \textbf{4} se usa la instrucción \codeblue{\textbf{int}} \textbf{21h}, que en conjunto
+  estas tres instrucciónes lo que hacen es aplicar un retorno de carro, para que en la linea \textbf{6, 7 y 8} se aplique un salto de linea en la consola, 
+  para que el resultado no se imprima pegado a la impresión anterior. 
+ }
+
+ {
+   \Large En la linea \textbf{10} se copia la dirección de memoria de la variable \textbf{resultado} usando la instrucción \codeblue{\textbf{offset}} en el registro
+  \codebordo{\textbf{dx}}, en la linea \textbf{11} se copia el valor de la función \textbf{9h} en \codebordo{\textbf{ah}}, luego se usa la interrupción 
+  \codeblue{\textbf{int}} \textbf{21h} para imprimir la cadena que se guarda en la variable resultado que es \codepurple{\textbf{El indice del valor ingresado es: }},
+  en la linea \textbf{14} se copia el indice del número buscado que esta en \textbf{middle} al registro \codebordo{\textbf{dl}}, en la linea \textbf{15} se convierte 
+  ese valor \textbf{ascci} a decimal, para que en la linea \textbf{16 y 17} se imprima el indice del número buscado por consola.
+ }
+\end{document}
